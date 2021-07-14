@@ -67,21 +67,11 @@ async function main() {
       console.log("Restored the build cache");
     }
     core.endGroup();
+    
+    await run("Run esy cleanup", "esy", ["cleanup", "."]);
 
-    if (!buildCacheKey) {
-      await runEsyCommand("Run esy build-dependencies", ["build-dependencies"]);
-    }
+    await cache.saveCache(depsPath, buildKey);
 
-    await runEsyCommand("Run esy build", ["build"]);
-
-    if (buildCacheKey != buildKey) {
-      await cache.saveCache(depsPath, buildKey);
-    }
-
-    // TODO: support cleanup + manifest
-    if (!manifestKey && !buildCacheKey) {
-      await run("Run esy cleanup", "esy", ["cleanup", "."]);
-    }
   } catch (e) {
     core.setFailed(e.message);
   }
