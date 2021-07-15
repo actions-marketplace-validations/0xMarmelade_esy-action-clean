@@ -1,4 +1,4 @@
-name: esy - Github Action
+name: esy clean cache - Github Action
 description: Run cached esy install and esy build
 inputs:
   cache-key:
